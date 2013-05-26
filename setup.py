@@ -1,5 +1,5 @@
 # coding=utf-8
-from setuptools import setup, find_packages
+from setuptools import setup
 
 from porter import __version__
 
@@ -13,9 +13,7 @@ setup(
     license='MIT',
     keywords='file directory operation',
     url='https://github.com/shunfan/porter',
-    packages=find_packages(),
-    include_package_data=True,
-    install_requires=open("requirements.txt").readlines(),
+    py_modules=['porter'],
     classifiers=[
         'Development Status :: 1 - Planning',
         'Intended Audience :: Developers',
