@@ -13,7 +13,6 @@ __all__ = ['mkdir', 'copy', 'copy_to', 'move', 'move_to', 'FileExistsError']
 __version__ = '0.0.1'
 
 
-
 class FileExistsError(EnvironmentError):
     pass
 
