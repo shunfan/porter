@@ -26,6 +26,7 @@ def init():
 
 
 def test_mkdir():
+    init()
     porter.mkdir(mkdir)
     porter.mkdir(mkdir, ignore=True)
     porter.mkdir(mkdir, force=True)
