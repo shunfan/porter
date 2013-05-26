@@ -8,6 +8,8 @@ python:
 
 install:
   - python setup.py install
+  - pip install coveralls
 
 script:
+  - coverage run --source=porter setup.py nosetests
   - python setup.py nosetests
