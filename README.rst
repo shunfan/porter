@@ -1,4 +1,4 @@
-porter
+Porter
 ======
 
 Porter: Simple File Operations in Python
