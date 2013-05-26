@@ -1,6 +1,12 @@
 Porter
 ------
 
+.. image:: https://travis-ci.org/shunfan/porter.png?branch=master
+    :target: https://travis-ci.org/shunfan/porter
+
+.. image:: https://coveralls.io/repos/shunfan/porter/badge.png?branch=master
+    :target: https://coveralls.io/r/shunfan/porter?branch=master
+
 Porter provides simple file operations.
 
 License

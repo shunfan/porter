@@ -1,5 +1,9 @@
 Code is poetry.
 
+0.0.3
+- pass 100% covered tests
+- FileExistsError and FileNotFoundError
+
 0.0.1
 - Porter was born
 - Basic functions

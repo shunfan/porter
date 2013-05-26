@@ -10,7 +10,7 @@ import shutil
 
 
 __all__ = ['mkdir', 'copy', 'copy_to', 'move', 'move_to', 'FileExistsError', 'FileNotFoundError']
-__version__ = '0.0.1'
+__version__ = '0.0.3'
 
 
 class FileExistsError(EnvironmentError):
