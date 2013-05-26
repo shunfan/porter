@@ -1,7 +1,12 @@
 Porter
-======
+------
 
-Porter: Simple File Operations in Python
+Porter is a simple file operations in Python.
+
+License
+-------
+
+MIT.
 
 Installation
 ------------
