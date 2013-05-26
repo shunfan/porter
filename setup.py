@@ -1,10 +1,4 @@
 # coding=utf-8
-import sys
-
-extra = {}
-if sys.version_info >= (3,):
-    extra['use_2to3'] = True
-
 from setuptools import setup, find_packages
 
 from porter import __version__
@@ -32,5 +26,4 @@ setup(
         'Programming Language :: Python :: 3.3',
         'Topic :: Utilities',
     ],
-    **extra
 )
