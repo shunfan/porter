@@ -1,7 +1,7 @@
 Porter
 ------
 
-Porter is a simple file operations in Python.
+Porter provides simple file operations.
 
 License
 -------
