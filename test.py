@@ -99,7 +99,9 @@ def test_FileExistsError():
     init()
     with raises(FileExistsError):
         mkdir(test_porter)
+    with raises(FileExistsError):
         copy(dir1_f1, dir2_f2)
+    with raises(FileExistsError):
         copy(dir1, dir2)
 
 
