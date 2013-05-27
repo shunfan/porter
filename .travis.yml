@@ -9,7 +9,6 @@ python:
 install:
   - python setup.py install
   - pip install coveralls
-  - pip install pytest
 
 script:
   - coverage run --source=porter -m pytest test.py
