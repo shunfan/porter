@@ -9,7 +9,7 @@ import os
 import shutil
 
 
-__all__ = ['mkdir', 'copy', 'copy_to', 'move', 'move_to', 'archive', 'FileExistsError', 'FileNotFoundError']
+__all__ = ['mkdir', 'copy', 'copy_to', 'move', 'move_to', 'archive', 'FileExistsError', 'FileNotFoundError', 'FileTypeError']
 __version__ = '0.0.5'
 
 
@@ -18,6 +18,10 @@ class FileExistsError(EnvironmentError):
 
 
 class FileNotFoundError(EnvironmentError):
+    pass
+
+
+class FileTypeError(EnvironmentError):
     pass
 
 
@@ -105,4 +109,7 @@ def archive(src, name=None, format='tar'):
         dst = os.path.join(parent_dir, os.path.basename(src))
     else:
         dst = os.path.join(parent_dir, name)
-    return shutil.make_archive(dst, format, src)
+    try:
+        return shutil.make_archive(dst, format, src)
+    except OSError:
+        raise FileTypeError("'%s' is not directory." % src)

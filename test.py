@@ -2,7 +2,9 @@
 from __future__ import with_statement
 import os
 
-from porter import mkdir, copy, copy_to, move, move_to, archive, FileExistsError, FileNotFoundError
+from porter import mkdir, copy, copy_to, move, move_to, \
+                   archive, FileExistsError, FileNotFoundError, \
+                   FileTypeError
 from pytest import raises
 
 
@@ -136,3 +138,8 @@ class TestError:
         init()
         with raises(FileNotFoundError):
             move('none', 'none')
+
+    def test_FileTypeError(self):
+        init()
+        with raises(FileTypeError):
+            archive(dir1_f1)
