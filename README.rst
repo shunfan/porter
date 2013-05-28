@@ -53,7 +53,7 @@ Ignore and force are both available in 'mkdir', 'copy', 'copy_to', 'move', 'move
 
 Archive::
 
-    porter.mkdir('/dir1/dir2') # retrun the archive .tar file '/dir1/dir2.tar'
-    porter.mkdir('/dir1/dir2', 'archive', 'zip') # return the archive file '/dir1/archive.zip'
+    porter.archive('/dir1/dir2') # retrun the archive .tar file '/dir1/dir2.tar'
+    porter.archive('/dir1/dir2', 'archive', 'zip') # return the archive file '/dir1/archive.zip'
 
 All supported archive types: 'gztar', 'bztar', 'tar', 'zip'
