@@ -95,8 +95,8 @@ def move_to(src, dst, ignore=False, force=False):
 def archive(src, name=None, format='tar'):
     """
     Archive types:
-        - gztar: gzip’ed tar-file
-        - bztar: bzip2’ed tar-file
+        - gztar: gzip'ed tar-file
+        - bztar: bzip2'ed tar-file
         - tar: uncompressed tar file
         - zip: ZIP file
     """
