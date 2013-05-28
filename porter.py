@@ -9,7 +9,9 @@ import os
 import shutil
 
 
-__all__ = ['mkdir', 'copy', 'copy_to', 'move', 'move_to', 'archive', 'FileExistsError', 'FileNotFoundError', 'FileTypeError']
+__all__ = ['mkdir', 'copy', 'copy_to', 'move', 'move_to', \
+          'archive', 'archive_to', 'FileExistsError', \
+          'FileNotFoundError', 'FileTypeError']
 __version__ = '0.0.5'
 
 
@@ -113,3 +115,7 @@ def archive(src, name=None, format='tar'):
         return shutil.make_archive(dst, format, src)
     except OSError:
         raise FileTypeError("'%s' is not directory." % src)
+
+
+def archive_to(src, dst, name=None, format='tar'):
+    move_to(archive(src, name, format), dst)

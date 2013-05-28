@@ -3,8 +3,8 @@ from __future__ import with_statement
 import os
 
 from porter import mkdir, copy, copy_to, move, move_to, \
-                   archive, FileExistsError, FileNotFoundError, \
-                   FileTypeError
+                   archive, archive_to, FileExistsError, \
+                   FileNotFoundError, FileTypeError
 from pytest import raises
 
 
@@ -12,8 +12,10 @@ test_porter = 'test_porter'
 dir_mkdir = os.path.join(test_porter, 'dir_mkdir')
 dir1 = os.path.join(test_porter, 'dir1')
 dir1_tar = os.path.join(test_porter, 'dir1.tar')
-dir1_archive = os.path.join(test_porter, 'archive.tar')
+dir1_archive_tar = os.path.join(test_porter, 'archive.tar')
 dir2 = os.path.join(test_porter, 'dir2')
+dir2_dir1_tar = os.path.join(test_porter, 'dir2', 'dir1.tar')
+dir2_archive_tar = os.path.join(test_porter, 'dir2', 'archive.tar')
 dir2_dir1 = os.path.join(test_porter, 'dir2', 'dir1')
 dir1_f1 = os.path.join(test_porter, 'dir1', 'f1.txt')
 dir2_f1 = os.path.join(test_porter, 'dir2', 'f1.txt')
@@ -113,6 +115,7 @@ class TestMoveTo:
         assert os.path.exists(dir1) == False
         assert os.path.exists(dir2_dir1) == True
 
+
 class TestArchive:
     def test_directory(self):
         init()
@@ -120,7 +123,18 @@ class TestArchive:
         archive(dir1, 'archive')
         assert os.path.exists(dir1) == True
         assert os.path.exists(dir1_tar) == True
-        assert os.path.exists(dir1_archive) == True
+        assert os.path.exists(dir1_archive_tar) == True
+
+
+class TestArchiveTo:
+    def test_directory(self):
+        init()
+        archive_to(dir1, dir2)
+        archive_to(dir1, dir2, 'archive')
+        assert os.path.exists(dir1) == True
+        assert os.path.exists(dir2_dir1_tar) == True
+        assert os.path.exists(dir2_archive_tar) == True
+
 
 class TestError:
     def test_FileExistsError(self):
