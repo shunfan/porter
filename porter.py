@@ -9,8 +9,8 @@ import os
 import shutil
 
 
-__all__ = ['mkdir', 'copy', 'copy_to', 'move', 'move_to', 'FileExistsError', 'FileNotFoundError']
-__version__ = '0.0.3'
+__all__ = ['mkdir', 'copy', 'copy_to', 'move', 'move_to', 'archive', 'FileExistsError', 'FileNotFoundError']
+__version__ = '0.0.5'
 
 
 class FileExistsError(EnvironmentError):
@@ -24,19 +24,18 @@ class FileNotFoundError(EnvironmentError):
 def mkdir(directory, ignore=False, force=False):
     """
     Create a directory.
-    Ignore: when the directory exists, no error occurs.
     """
     if os.path.exists(directory):
         if not ignore and not force:
             try:
-                os.mkdir(directory)
+                os.makedirs(directory)
             except OSError:
                 raise FileExistsError("'%s' is exist." % directory)
         elif force:
             shutil.rmtree(directory)
-            os.mkdir(directory)
+            os.makedirs(directory)
     else:
-        os.mkdir(directory)
+        os.makedirs(directory)
 
 
 def copy(src, dst, ignore=False, force=False):
@@ -91,3 +90,19 @@ def move(src, dst, ignore=False, force=False):
 
 def move_to(src, dst, ignore=False, force=False):
     move(src, os.path.join(dst, os.path.basename(src)), ignore, force)
+
+
+def archive(src, name=None, format='tar'):
+    """
+    Archive types:
+        - gztar: gzip’ed tar-file
+        - bztar: bzip2’ed tar-file
+        - tar: uncompressed tar file
+        - zip: ZIP file
+    """
+    parent_dir = os.path.abspath(os.path.join(src, os.pardir))
+    if not name:
+        dst = os.path.join(parent_dir, os.path.basename(src))
+    else:
+        dst = os.path.join(parent_dir, name)
+    return shutil.make_archive(dst, format, src)
