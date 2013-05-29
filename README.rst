@@ -55,6 +55,6 @@ Archive::
 
     porter.archive('/foo/bar') # retrun the archive .tar file '/foo/bar.tar'
     porter.archive('/foo/bar', 'archive', 'zip') # return the archive file '/foo/archive.zip'
-    porter.archive('/foo/bar', '/foo/bar1', 'archive') # return '/foo/bar1/archive.tar'
+    porter.archive_to('/foo/bar', '/foo/bar1', 'archive') # return '/foo/bar1/archive.tar'
 
 All supported archive types: 'gztar', 'bztar', 'tar', 'zip'
