@@ -2,8 +2,8 @@
 from __future__ import with_statement
 import os
 
-from porter import mkdir, copy, copy_to, move, move_to, \
-                   archive, archive_to, FileExistsError, \
+from porter import mkdir, remove, copy, copy_to, move, \
+                   move_to, archive, archive_to, FileExistsError, \
                    FileNotFoundError, FileTypeError
 from pytest import raises
 
@@ -39,6 +39,18 @@ def test_mkdir():
     mkdir(dir_mkdir, ignore=True)
     mkdir(dir_mkdir, force=True)
     assert os.path.exists(dir_mkdir) == True
+
+
+class TestRemove:
+    def test_file(self):
+        init()
+        remove(dir1_f1)
+        assert os.path.exists(dir1_f1) == False
+
+    def test_directory(self):
+        init()
+        remove(dir1)
+        assert os.path.exists(dir1) == False
 
 
 class TestCopy:

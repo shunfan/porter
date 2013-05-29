@@ -9,10 +9,10 @@ import os
 import shutil
 
 
-__all__ = ['mkdir', 'copy', 'copy_to', 'move', 'move_to', \
-          'archive', 'archive_to', 'FileExistsError', \
+__all__ = ['mkdir', 'remove', 'copy', 'copy_to', 'move', \
+          'move_to', 'archive', 'archive_to', 'FileExistsError', \
           'FileNotFoundError', 'FileTypeError']
-__version__ = '0.0.5'
+__version__ = '0.0.6'
 
 
 class FileExistsError(EnvironmentError):
@@ -38,10 +38,20 @@ def mkdir(directory, ignore=False, force=False):
             except OSError:
                 raise FileExistsError("'%s' is exist." % directory)
         elif force:
-            shutil.rmtree(directory)
+            remove(directory)
             os.makedirs(directory)
     else:
         os.makedirs(directory)
+
+
+def remove(src):
+    """
+    Remove a file or a directory.
+    """
+    if os.path.isfile(src):
+        os.remove(src)
+    elif os.path.isdir(src):
+        shutil.rmtree(src)
 
 
 def copy(src, dst, ignore=False, force=False):
@@ -70,7 +80,7 @@ def copy(src, dst, ignore=False, force=False):
                 except OSError:
                     raise FileExistsError("'%s' is exist." % dst)
             elif force:
-                shutil.rmtree(dst)
+                remove(dst)
                 shutil.copytree(src, dst)
         else:
             shutil.copytree(src, dst)
@@ -88,10 +98,7 @@ def move(src, dst, ignore=False, force=False):
         - move a directory to a future destination.
     """
     copy(src, dst, ignore, force)
-    if os.path.isfile(src):
-        os.remove(src)
-    elif os.path.isdir(src):
-        shutil.rmtree(src)
+    remove(src)
 
 
 def move_to(src, dst, ignore=False, force=False):

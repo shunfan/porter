@@ -32,6 +32,10 @@ Create a folder::
 
     porter.mkdir('/foo/bar') # The directory 'bar' will be created within empty file.
 
+Remove a file/directory::
+
+    porter.remove('/foo/bar')
+
 Copy a file/directory::
 
     # Two ways same result
