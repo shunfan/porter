@@ -60,7 +60,7 @@ Move a file/directory::
 
 Ignore and force::
 
-    porter.mkdir('/foo/bar', ignore=Ture)
+    porter.mkdir('/foo/bar', ignore=True)
     # If '/foo/bar' exists, porter will not create the folder and no error will occur.
     porter.move('/foo/bar', '/foo1/bar', force=True)
     # If '/foo1/bar' exists, porter will move the directory anyway.
