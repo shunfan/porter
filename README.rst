@@ -31,7 +31,7 @@ Import porter::
 Create a folder::
 
     porter.mkdir('/foo/bar')
-    # The directory 'bar' will be created within empty file.
+    # The new directory 'bar' will be created.
 
 Rename a file/directory::
 
