@@ -66,7 +66,7 @@ def rename(src, name, ignore=False, force=False):
     Rename a file or a directory
     """
     parent_dir = os.path.abspath(os.path.join(src, os.pardir))
-    move(src, os.path.join(parent_dir, name), ignore, force)
+    return move(src, os.path.join(parent_dir, name), ignore, force)
 
 
 def remove(src):
@@ -124,6 +124,7 @@ def move(src, dst, ignore=False, force=False):
     """
     copy(src, dst, ignore, force)
     remove(src)
+    return dst
 
 
 def move_to(src, dst, ignore=False, force=False):
@@ -137,6 +138,8 @@ def archive(src, name=None, format='tar'):
         - bztar: bzip2'ed tar-file
         - tar: uncompressed tar file
         - zip: ZIP file
+    Warning:
+        - Archive will overwrite file with the same name forcely
     """
     parent_dir = os.path.abspath(os.path.join(src, os.pardir))
     if not name:
@@ -150,4 +153,4 @@ def archive(src, name=None, format='tar'):
 
 
 def archive_to(src, dst, name=None, format='tar'):
-    move_to(archive(src, name, format), dst)
+    return move_to(archive(src, name, format), dst)
