@@ -36,3 +36,6 @@ nosetests.xml
 
 # Tests
 test_porter/*
+include/python2.7
+
+.Python

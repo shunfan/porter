@@ -1,6 +1,10 @@
 Code is poetry.
 
-0.0.6 
+0.0.8
+- class TargetFile support
+- rename function
+
+0.0.6
 - Remove function
 
 0.0.5

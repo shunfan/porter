@@ -2,8 +2,8 @@
 from __future__ import with_statement
 import os
 
-from porter import mkdir, remove, copy, copy_to, move, \
-                   move_to, archive, archive_to, FileExistsError, \
+from porter import TargetFile, mkdir, rename, remove, copy, copy_to, \
+                   move, move_to, archive, archive_to, FileExistsError, \
                    FileNotFoundError, FileTypeError
 from pytest import raises
 
@@ -39,6 +39,41 @@ def test_mkdir():
     mkdir(dir_mkdir, ignore=True)
     mkdir(dir_mkdir, force=True)
     assert os.path.exists(dir_mkdir) == True
+
+
+class TestTargetFile:
+    def test_init(self):
+        init()
+        target_file = TargetFile(dir1_f1)
+        assert isinstance(target_file, TargetFile) == True
+
+    def test_move_to(self):
+        init()
+        target_file = TargetFile(dir1_f1)
+        target_file.move_to(dir2)
+        assert os.path.exists(dir1_f1) == False
+        assert os.path.exists(dir2_f1) == True
+        assert target_file.src == dir2_f1
+
+    def test_remove(self):
+        init()
+        target_file = TargetFile(dir1_f1)
+        target_file.remove()
+        assert os.path.exists(dir1_f1) == False
+
+
+class TestRename:
+    def test_file(self):
+        init()
+        rename(dir2_f2, 'f1.txt')
+        assert os.path.exists(dir2_f2) == False
+        assert os.path.exists(dir2_f1) == True
+
+    def test_directory(self):
+        init()
+        rename(dir1, dir2, force=True)
+        assert os.path.exists(dir1) == False
+        assert os.path.exists(dir2) == True
 
 
 class TestRemove:

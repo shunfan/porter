@@ -9,10 +9,27 @@ import os
 import shutil
 
 
-__all__ = ['mkdir', 'remove', 'copy', 'copy_to', 'move', \
-          'move_to', 'archive', 'archive_to', 'FileExistsError', \
-          'FileNotFoundError', 'FileTypeError']
-__version__ = '0.0.6'
+__all__ = ['TargetFile', 'mkdir', 'rename', 'remove', 'copy', 'copy_to', \
+           'move', 'move_to', 'archive', 'archive_to', 'FileExistsError', \
+           'FileNotFoundError', 'FileTypeError']
+__version__ = '0.0.8'
+
+
+class TargetFile(object):
+    def __init__(self, src):
+        self._src = src
+
+    @property
+    def src(self):
+        return self._src
+
+    def move_to(self, dst, ignore=False, force=False):
+        move_to(self.src, dst, ignore, force)
+        if not os.path.exists(self.src):
+            self._src = os.path.join(dst, os.path.basename(self.src))
+
+    def remove(self):
+        remove(self.src)
 
 
 class FileExistsError(EnvironmentError):
@@ -42,6 +59,14 @@ def mkdir(directory, ignore=False, force=False):
             os.makedirs(directory)
     else:
         os.makedirs(directory)
+
+
+def rename(src, name, ignore=False, force=False):
+    """
+    Rename a file or a directory
+    """
+    parent_dir = os.path.abspath(os.path.join(src, os.pardir))
+    move(src, os.path.join(parent_dir, name), ignore, force)
 
 
 def remove(src):
