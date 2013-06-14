@@ -84,6 +84,7 @@ class ``TargetFile``::
     bar.src
     >>> '/foo/bar.txt'
     bar.move_to('foo1')
+    bar.src
     >>> '/foo1/bar.txt'
     bar.remove()
     # Then it will be removed.

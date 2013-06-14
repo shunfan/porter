@@ -128,7 +128,7 @@ def move(src, dst, ignore=False, force=False):
 
 
 def move_to(src, dst, ignore=False, force=False):
-    move(src, os.path.join(dst, os.path.basename(src)), ignore, force)
+    return move(src, os.path.join(dst, os.path.basename(src)), ignore, force)
 
 
 def archive(src, name=None, format='tar'):
