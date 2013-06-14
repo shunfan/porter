@@ -30,7 +30,15 @@ Import porter::
 
 Create a folder::
 
-    porter.mkdir('/foo/bar') # The directory 'bar' will be created within empty file.
+    porter.mkdir('/foo/bar')
+    # The directory 'bar' will be created within empty file.
+
+Rename a file/directory::
+
+    porter.rename('/foo/bar.txt', 'file.txt')
+    >>> '/foo/file.txt'
+    porter.rename('/foo/bar', 'folder')
+    >>> '/foo/folder'
 
 Remove a file/directory::
 
@@ -46,19 +54,36 @@ Move a file/directory::
 
     # Two ways same result
     porter.move('/foo/bar', '/foo1/bar')
+    >>> '/foo1/bar'
     porter.move_to('/foo/bar', '/foo1')
+    >>> '/foo1/bar'
 
 Ignore and force::
 
-    porter.mkdir('/foo/bar', ignore=Ture) # If '/foo/bar' exists, porter will not create the folder and no error will occur.
-    porter.move('/foo/bar', '/foo1/bar', force=True) # If '/foo1/bar' exists, porter will move the directory anyway.
+    porter.mkdir('/foo/bar', ignore=Ture)
+    # If '/foo/bar' exists, porter will not create the folder and no error will occur.
+    porter.move('/foo/bar', '/foo1/bar', force=True)
+    # If '/foo1/bar' exists, porter will move the directory anyway.
 
 Ignore and force are both available in 'mkdir', 'copy', 'copy_to', 'move', 'move_to' functions.
 
 Archive::
 
-    porter.archive('/foo/bar') # retrun the archive .tar file '/foo/bar.tar'
-    porter.archive('/foo/bar', 'archive', 'zip') # return the archive file '/foo/archive.zip'
-    porter.archive_to('/foo/bar', '/foo/bar1', 'archive') # return '/foo/bar1/archive.tar'
+    porter.archive('/foo/bar')
+    >>> '/foo/bar.tar'
+    porter.archive('/foo/bar', 'archive', 'zip')
+    >>> '/foo/archive.zip'
+    porter.archive_to('/foo/bar', '/foo/bar1', 'archive')
+    >>> '/foo/bar1/archive.tar'
 
 All supported archive types: 'gztar', 'bztar', 'tar', 'zip'
+
+class ``TargetFile``::
+
+    bar = porter.TargetFile('/foo/bar.txt')
+    bar.src
+    >>> '/foo/bar.txt'
+    bar.move_to('foo1')
+    >>> '/foo1/bar.txt'
+    bar.remove()
+    # Then it will be removed.
