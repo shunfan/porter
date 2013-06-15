@@ -1,12 +1,16 @@
 Code is poetry.
 
+0.1.0
+- Add the function of listing subordinate files and directories in class TargetDirectory
+- Better documentation
+
 0.0.9
-- class TargetDirectory
+- Class TargetDirectory
 - Redefine Ignore option
 
 0.0.8
-- class TargetFile
-- rename function
+- Class TargetFile
+- Rename function
 
 0.0.6
 - Remove function

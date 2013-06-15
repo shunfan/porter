@@ -12,7 +12,7 @@ import shutil
 __all__ = ['TargetFile', 'TargetDirectory', 'mkdir', 'rename', 'remove', \
            'copy', 'copy_to', 'move', 'move_to', 'archive', 'archive_to', \
            'FileExistsError', 'FileNotFoundError', 'FileTypeError']
-__version__ = '0.0.8'
+__version__ = '0.1.0'
 
 
 class TargetFile(object):
