@@ -2,9 +2,9 @@
 from __future__ import with_statement
 import os
 
-from porter import TargetFile, mkdir, rename, remove, copy, copy_to, \
-                   move, move_to, archive, archive_to, FileExistsError, \
-                   FileNotFoundError, FileTypeError
+from porter import TargetFile, TargetDirectory, mkdir, rename, remove, \
+                   copy, copy_to, move, move_to, archive, archive_to, \
+                   FileExistsError, FileNotFoundError, FileTypeError
 from pytest import raises
 
 
@@ -36,151 +36,219 @@ def init():
 def test_mkdir():
     init()
     mkdir(dir_mkdir)
+    assert os.path.exists(dir_mkdir)
     mkdir(dir_mkdir, ignore=True)
+    assert os.path.exists(dir_mkdir)
     mkdir(dir_mkdir, force=True)
-    assert os.path.exists(dir_mkdir) == True
+    assert os.path.exists(dir_mkdir)
 
 
 class TestTargetFile:
     def test_init(self):
         init()
         target_file = TargetFile(dir1_f1)
-        assert isinstance(target_file, TargetFile) == True
+        assert isinstance(target_file, TargetFile)
 
     def test_move_to(self):
         init()
         target_file = TargetFile(dir1_f1)
         target_file.move_to(dir2)
-        assert os.path.exists(dir1_f1) == False
-        assert os.path.exists(dir2_f1) == True
+        assert not os.path.exists(dir1_f1)
+        assert os.path.exists(dir2_f1)
         assert target_file.src == dir2_f1
 
     def test_remove(self):
         init()
         target_file = TargetFile(dir1_f1)
         target_file.remove()
-        assert os.path.exists(dir1_f1) == False
+        assert not os.path.exists(dir1_f1)
+
+
+class TestTargetDirectory:
+    def test_init(self):
+        init()
+        target_directory = TargetDirectory(dir1)
+        assert isinstance(target_directory, TargetDirectory)
+
+    def test_move_to(self):
+        init()
+        target_directory = TargetDirectory(dir1)
+        target_directory.move_to(dir2)
+        assert not os.path.exists(dir1)
+        assert os.path.exists(dir2_dir1)
+        assert target_directory.src == dir2_dir1
+
+    def test_empty(self):
+        init()
+        target_directory = TargetDirectory(dir1)
+        target_directory.empty()
+        assert os.path.exists(dir1)
+        assert not os.path.exists(dir1_f1)
+
+    def test_remove(self):
+        init()
+        target_directory = TargetDirectory(dir1)
+        target_directory.remove()
+        assert not os.path.exists(dir1)
 
 
 class TestRename:
     def test_file(self):
         init()
         rename(dir2_f2, 'f1.txt')
-        assert os.path.exists(dir2_f2) == False
-        assert os.path.exists(dir2_f1) == True
+        assert not os.path.exists(dir2_f2)
+        assert os.path.exists(dir2_f1)
 
     def test_directory(self):
         init()
         rename(dir1, dir2, force=True)
-        assert os.path.exists(dir1) == False
-        assert os.path.exists(dir2) == True
+        assert not os.path.exists(dir1)
+        assert os.path.exists(dir2)
 
 
 class TestRemove:
     def test_file(self):
         init()
         remove(dir1_f1)
-        assert os.path.exists(dir1_f1) == False
+        assert not os.path.exists(dir1_f1)
 
     def test_directory(self):
         init()
         remove(dir1)
-        assert os.path.exists(dir1) == False
+        assert not os.path.exists(dir1)
 
 
 class TestCopy:
     def test_file(self):
         init()
         copy(dir1_f1, dir2_f1)
+        assert os.path.exists(dir1_f1)
+        assert os.path.exists(dir2_f1)
         copy(dir1_f1, dir2_f1, ignore=True)
+        assert os.path.exists(dir1_f1)
+        assert os.path.exists(dir2_f1)
         copy(dir1_f1, dir2_f1, force=True)
-        assert os.path.exists(dir1_f1) == True
-        assert os.path.exists(dir2_f1) == True
+        assert os.path.exists(dir1_f1)
+        assert os.path.exists(dir2_f1)
 
     def test_directory(self):
         init()
         copy(dir1, dir2_dir1)
+        assert os.path.exists(dir1)
+        assert os.path.exists(dir2_dir1)
         copy(dir1, dir2_dir1, ignore=True)
+        assert os.path.exists(dir1)
+        assert os.path.exists(dir2_dir1)
         copy(dir1, dir2_dir1, force=True)
-        assert os.path.exists(dir1) == True
-        assert os.path.exists(dir2_dir1) == True
+        assert os.path.exists(dir1)
+        assert os.path.exists(dir2_dir1)
 
 
 class TestCopyTo:
     def test_file(self):
         init()
         copy_to(dir1_f1, dir2)
+        assert os.path.exists(dir1_f1)
+        assert os.path.exists(dir2_f1)
         copy_to(dir1_f1, dir2, ignore=True)
+        assert os.path.exists(dir1_f1)
+        assert os.path.exists(dir2_f1)
         copy_to(dir1_f1, dir2, force=True)
-        assert os.path.exists(dir1_f1) == True
-        assert os.path.exists(dir2_f1) == True
+        assert os.path.exists(dir1_f1)
+        assert os.path.exists(dir2_f1)
 
     def test_directory(self):
         init()
         copy_to(dir1, dir2)
+        assert os.path.exists(dir1)
+        assert os.path.exists(dir2_dir1)
         copy_to(dir1, dir2, ignore=True)
+        assert os.path.exists(dir1)
+        assert os.path.exists(dir2_dir1)
         copy_to(dir1, dir2, force=True)
-        assert os.path.exists(dir1) == True
-        assert os.path.exists(dir2_dir1) == True
+        assert os.path.exists(dir1)
+        assert os.path.exists(dir2_dir1)
 
 
 class TestMove:
     def test_file(self):
         init()
         move(dir1_f1, dir2_f1)
+        assert not os.path.exists(dir1_f1)
+        assert os.path.exists(dir2_f1)
+        create(dir1_f1)
         move(dir1_f1, dir2_f1, ignore=True)
+        assert not os.path.exists(dir1_f1)
+        assert os.path.exists(dir2_f1)
         create(dir1_f1)
         move(dir1_f1, dir2_f1, force=True)
-        assert os.path.exists(dir1_f1) == False
-        assert os.path.exists(dir2_f1) == True
+        assert not os.path.exists(dir1_f1)
+        assert os.path.exists(dir2_f1)
 
     def test_directory(self):
         init()
         move(dir1, dir2_dir1)
+        assert not os.path.exists(dir1)
+        assert os.path.exists(dir2_dir1)
+        mkdir(dir1)
         move(dir1, dir2_dir1, ignore=True)
+        assert not os.path.exists(dir1)
+        assert os.path.exists(dir2_dir1)
         mkdir(dir1)
         move(dir1, dir2_dir1, force=True)
-        assert os.path.exists(dir1) == False
-        assert os.path.exists(dir2_dir1) == True
+        assert not os.path.exists(dir1)
+        assert os.path.exists(dir2_dir1)
 
 
 class TestMoveTo:
     def test_file(self):
         init()
         move_to(dir1_f1, dir2)
+        assert not os.path.exists(dir1_f1)
+        assert os.path.exists(dir2_f1)
+        create(dir1_f1)
         move_to(dir1_f1, dir2, ignore=True)
+        assert not os.path.exists(dir1_f1)
+        assert os.path.exists(dir2_f1)
         create(dir1_f1)
         move_to(dir1_f1, dir2, force=True)
-        assert os.path.exists(dir1_f1) == False
-        assert os.path.exists(dir2_f1) == True
+        assert not os.path.exists(dir1_f1)
+        assert os.path.exists(dir2_f1)
     def test_directory(self):
         init()
         move_to(dir1, dir2)
+        assert not os.path.exists(dir1)
+        assert os.path.exists(dir2_dir1)
+        mkdir(dir1)
         move_to(dir1, dir2, ignore=True)
+        assert not os.path.exists(dir1)
+        assert os.path.exists(dir2_dir1)
         mkdir(dir1)
         move_to(dir1, dir2, force=True)
-        assert os.path.exists(dir1) == False
-        assert os.path.exists(dir2_dir1) == True
+        assert not os.path.exists(dir1)
+        assert os.path.exists(dir2_dir1)
 
 
 class TestArchive:
     def test_directory(self):
         init()
         archive(dir1)
+        assert os.path.exists(dir1)
+        assert os.path.exists(dir1_tar)
         archive(dir1, 'archive')
-        assert os.path.exists(dir1) == True
-        assert os.path.exists(dir1_tar) == True
-        assert os.path.exists(dir1_archive_tar) == True
+        assert os.path.exists(dir1)
+        assert os.path.exists(dir1_archive_tar)
 
 
 class TestArchiveTo:
     def test_directory(self):
         init()
         archive_to(dir1, dir2)
+        assert os.path.exists(dir1)
+        assert os.path.exists(dir2_dir1_tar)
         archive_to(dir1, dir2, 'archive')
-        assert os.path.exists(dir1) == True
-        assert os.path.exists(dir2_dir1_tar) == True
-        assert os.path.exists(dir2_archive_tar) == True
+        assert os.path.exists(dir1)
+        assert os.path.exists(dir2_archive_tar)
 
 
 class TestError:
