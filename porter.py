@@ -17,6 +17,8 @@ __version__ = '0.0.8'
 
 class TargetFile(object):
     def __init__(self, src):
+        if not os.path.isfile(src):
+            raise FileTypeError("'%s' is not a file." % src)
         self._src = src
 
     @property
@@ -33,11 +35,34 @@ class TargetFile(object):
 
 class TargetDirectory(object):
     def __init__(self, src):
+        if not os.path.isdir(src):
+            raise FileTypeError("'%s' is not a directory." % src)
         self._src = src
 
     @property
     def src(self):
         return self._src
+
+    @property
+    def branch(self):
+        branch = []
+        for f in os.listdir(self.src):
+            path = os.path.join(self.src, f)
+            if os.path.isfile(path):
+                f = TargetFile(path)
+            elif os.path.isdir(path):
+                f = TargetDirectory(path)
+            branch.append(f)
+        return branch
+
+    def list(self):
+        structure = {}
+        for branch in self.branch:
+            if isinstance(branch, TargetFile):
+                structure[os.path.basename(branch.src)] = None
+            elif isinstance(branch, TargetDirectory):
+                structure[os.path.basename(branch.src)] = branch.list()
+        return structure
 
     def move_to(self, dst, ignore=False, force=False):
         move_to(self.src, dst, ignore, force)
@@ -168,7 +193,7 @@ def archive(src, name=None, format='tar'):
     try:
         return shutil.make_archive(dst, format, src)
     except OSError:
-        raise FileTypeError("'%s' is not directory." % src)
+        raise FileTypeError("'%s' is not a directory." % src)
 
 
 def archive_to(src, dst, name=None, format='tar'):

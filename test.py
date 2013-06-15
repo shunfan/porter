@@ -70,6 +70,11 @@ class TestTargetDirectory:
         target_directory = TargetDirectory(dir1)
         assert isinstance(target_directory, TargetDirectory)
 
+    def test_list(self):
+        init()
+        target_directory = TargetDirectory(test_porter)
+        assert isinstance(target_directory.list(), dict)
+
     def test_move_to(self):
         init()
         target_directory = TargetDirectory(dir1)
@@ -272,3 +277,8 @@ class TestError:
         init()
         with raises(FileTypeError):
             archive(dir1_f1)
+        init()
+        with raises(FileTypeError):
+            f = TargetFile(dir1)
+        with raises(FileTypeError):
+            d = TargetDirectory(dir1_f1)
