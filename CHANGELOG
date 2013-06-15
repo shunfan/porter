@@ -1,7 +1,11 @@
 Code is poetry.
 
+0.0.9
+- class TargetDirectory
+- Redefine Ignore option
+
 0.0.8
-- class TargetFile support
+- class TargetFile
 - rename function
 
 0.0.6

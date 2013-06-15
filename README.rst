@@ -62,6 +62,7 @@ Ignore and force::
 
     porter.mkdir('/foo/bar', ignore=True)
     # If '/foo/bar' exists, porter will not create the folder and no error will occur.
+    # Ignore option can ONLY ignore the error of the existing destination file/directory.
     porter.move('/foo/bar', '/foo1/bar', force=True)
     # If '/foo1/bar' exists, porter will move the directory anyway.
 
@@ -86,5 +87,18 @@ class ``TargetFile``::
     bar.move_to('foo1')
     bar.src
     >>> '/foo1/bar.txt'
+    bar.remove()
+    # Then it will be removed.
+
+class ``TargetDirectory``::
+
+    bar = porter.TargetDirectory('/foo/bar')
+    bar.src
+    >>> '/foo/bar'
+    bar.move_to('foo1')
+    bar.src
+    >>> '/foo1/bar'
+    bar.empty()
+    # All of the files in it will be removed
     bar.remove()
     # Then it will be removed.

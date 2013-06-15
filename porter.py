@@ -9,9 +9,9 @@ import os
 import shutil
 
 
-__all__ = ['TargetFile', 'mkdir', 'rename', 'remove', 'copy', 'copy_to', \
-           'move', 'move_to', 'archive', 'archive_to', 'FileExistsError', \
-           'FileNotFoundError', 'FileTypeError']
+__all__ = ['TargetFile', 'TargetDirectory', 'mkdir', 'rename', 'remove', \
+           'copy', 'copy_to', 'move', 'move_to', 'archive', 'archive_to', \
+           'FileExistsError', 'FileNotFoundError', 'FileTypeError']
 __version__ = '0.0.8'
 
 
@@ -25,8 +25,27 @@ class TargetFile(object):
 
     def move_to(self, dst, ignore=False, force=False):
         move_to(self.src, dst, ignore, force)
-        if not os.path.exists(self.src):
-            self._src = os.path.join(dst, os.path.basename(self.src))
+        self._src = os.path.join(dst, os.path.basename(self.src))
+
+    def remove(self):
+        remove(self.src)
+
+
+class TargetDirectory(object):
+    def __init__(self, src):
+        self._src = src
+
+    @property
+    def src(self):
+        return self._src
+
+    def move_to(self, dst, ignore=False, force=False):
+        move_to(self.src, dst, ignore, force)
+        self._src = os.path.join(dst, os.path.basename(self.src))
+
+    def empty(self):
+        remove(self.src)
+        mkdir(self.src)
 
     def remove(self):
         remove(self.src)
@@ -86,7 +105,7 @@ def copy(src, dst, ignore=False, force=False):
         - copy a file to a future destination.
         - copy a directory to a future destination.
     """
-    if not os.path.exists(src) and not ignore:
+    if not os.path.exists(src):
         raise FileNotFoundError("'%s' is not found." % src)
 
     if os.path.isfile(src):
