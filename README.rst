@@ -37,6 +37,7 @@ Rename a file/directory::
 
     porter.rename('/foo/bar.txt', 'file.txt')
     >>> '/foo/file.txt'
+
     porter.rename('/foo/bar', 'folder')
     >>> '/foo/folder'
 
@@ -55,6 +56,7 @@ Move a file/directory::
     # Two ways same result
     porter.move('/foo/bar', '/foo1/bar')
     >>> '/foo1/bar'
+
     porter.move_to('/foo/bar', '/foo1')
     >>> '/foo1/bar'
 
@@ -63,6 +65,7 @@ Ignore and force::
     porter.mkdir('/foo/bar', ignore=True)
     # If '/foo/bar' exists, porter will not create the folder and no error will occur.
     # Ignore option can ONLY ignore the error of the existing destination file/directory.
+
     porter.move('/foo/bar', '/foo1/bar', force=True)
     # If '/foo1/bar' exists, porter will move the directory anyway.
 
@@ -72,8 +75,10 @@ Archive::
 
     porter.archive('/foo/bar')
     >>> '/foo/bar.tar'
+
     porter.archive('/foo/bar', 'archive', 'zip')
     >>> '/foo/archive.zip'
+
     porter.archive_to('/foo/bar', '/foo/bar1', 'archive')
     >>> '/foo/bar1/archive.tar'
 
@@ -82,23 +87,35 @@ All supported archive types: 'gztar', 'bztar', 'tar', 'zip'
 class ``TargetFile``::
 
     bar = porter.TargetFile('/foo/bar.txt')
+
     bar.src
     >>> '/foo/bar.txt'
+
     bar.move_to('foo1')
+
     bar.src
     >>> '/foo1/bar.txt'
+
     bar.remove()
     # Then it will be removed.
 
 class ``TargetDirectory``::
 
     bar = porter.TargetDirectory('/foo/bar')
+
     bar.src
     >>> '/foo/bar'
+
+    bar.list()
+    >>> {'dir1': {'f1.txt': None}, 'dir2': {'f2.txt': None}}
+
     bar.move_to('foo1')
+
     bar.src
     >>> '/foo1/bar'
+
     bar.empty()
     # All of the files in it will be removed
+
     bar.remove()
     # Then it will be removed.
