@@ -12,7 +12,7 @@ import shutil
 __all__ = ['TargetFile', 'TargetDirectory', 'mkdir', 'rename', 'remove', \
            'copy', 'copy_to', 'move', 'move_to', 'archive', 'archive_to', \
            'FileExistsError', 'FileNotFoundError', 'FileTypeError']
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 
 class TargetFile(object):
@@ -20,10 +20,21 @@ class TargetFile(object):
         if not os.path.isfile(src):
             raise FileTypeError("'%s' is not a file." % src)
         self._src = src
+        self._base = os.path.basename(self._src)
+        self._name = os.path.splitext(self._base)[0]
+        self._ext = os.path.splitext(self._base)[1][1:]
 
     @property
     def src(self):
         return self._src
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def ext(self):
+        return self._ext
 
     def move_to(self, dst, ignore=False, force=False):
         move_to(self.src, dst, ignore, force)
@@ -38,12 +49,16 @@ class TargetDirectory(object):
         if not os.path.isdir(src):
             raise FileTypeError("'%s' is not a directory." % src)
         self._src = src
+        self._name = os.path.basename(self._src)
 
     @property
     def src(self):
         return self._src
 
     @property
+    def name(self):
+        return self._name
+
     def branch(self):
         branch = []
         for f in os.listdir(self.src):
@@ -57,11 +72,11 @@ class TargetDirectory(object):
 
     def list(self):
         structure = {}
-        for branch in self.branch:
+        for branch in self.branch():
             if isinstance(branch, TargetFile):
-                structure[os.path.basename(branch.src)] = None
+                structure[branch.name] = branch.ext
             elif isinstance(branch, TargetDirectory):
-                structure[os.path.basename(branch.src)] = branch.list()
+                structure[branch.name] = branch.list()
         return structure
 
     def move_to(self, dst, ignore=False, force=False):
