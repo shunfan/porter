@@ -91,6 +91,12 @@ class ``TargetFile``::
     bar.src
     >>> '/foo/bar.txt'
 
+    bar.name
+    >>> 'bar'
+
+    bar.ext
+    >>> 'txt'
+
     bar.move_to('foo1')
 
     bar.src
@@ -101,13 +107,24 @@ class ``TargetFile``::
 
 class ``TargetDirectory``::
 
+    """
+    The structure of the directory:
+    - foo
+      - bar
+        - dir1
+          - f1.txt
+        - dir2
+          - f2.txt
+    - foo1
+    """
+
     bar = porter.TargetDirectory('/foo/bar')
 
     bar.src
     >>> '/foo/bar'
 
     bar.list()
-    >>> {'dir1': {'f1.txt': None}, 'dir2': {'f2.txt': None}}
+    >>> {'dir1': {'f1': 'txt'}, 'dir2': {'f2': 'txt'}}
 
     bar.move_to('foo1')
 
