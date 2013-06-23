@@ -70,6 +70,12 @@ class TestTargetDirectory:
         target_directory = TargetDirectory(dir1)
         assert isinstance(target_directory, TargetDirectory)
 
+    def test_branch(self):
+        init()
+        target_directory = TargetDirectory(test_porter)
+        for directory in target_directory.branch():
+            assert isinstance(directory, TargetDirectory)
+
     def test_list(self):
         init()
         target_directory = TargetDirectory(test_porter)
