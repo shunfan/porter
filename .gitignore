@@ -36,6 +36,7 @@ nosetests.xml
 
 # Tests
 test_porter/*
-include/python2.7
 
+# Virtualenv
+include/python2.7
 .Python
