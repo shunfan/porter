@@ -1,5 +1,12 @@
 Code is poetry.
 
+0.1.5
+- Reinvent listing dict
+- Add the function of listing all files and directories in the directory
+
+0.1.1
+- Better listing subordinate files and directories for directory
+
 0.1.0
 - Add the function of listing subordinate files and directories in class TargetDirectory
 - Better documentation
