@@ -124,7 +124,13 @@ class ``TargetDirectory``::
     >>> '/foo/bar'
 
     bar.list()
-    >>> {'dir1': {'f1': 'txt'}, 'dir2': {'f2': 'txt'}}
+    >>> {'dir1': {'f1.txt': None}, 'dir2': {'f2.txt': None}}
+
+    bar.files()
+    >>> ['f1.txt', 'f2.txt']
+
+    bar.directories()
+    >>> ['dir1', 'dir2']
 
     bar.move_to('foo1')
 

@@ -16,13 +16,20 @@ __version__ = '0.1.1'
 
 
 class TargetFile(object):
+    """
+    Target file for easy operation.
+
+    src  - the source of the file.
+    name - the name of the file, includes its extension.
+
+    `move_to` and `remove` can be used in this class.
+    """
     def __init__(self, src):
         if not os.path.isfile(src):
             raise FileTypeError("'%s' is not a file." % src)
         self._src = src
-        self._base = os.path.basename(self._src)
-        self._name = os.path.splitext(self._base)[0]
-        self._ext = os.path.splitext(self._base)[1][1:]
+        self._name = os.path.basename(src)
+        self._ext = os.path.splitext(os.path.basename(src))[1][1:]
 
     @property
     def src(self):
@@ -45,6 +52,20 @@ class TargetFile(object):
 
 
 class TargetDirectory(object):
+    """
+    Target Directory for easy operation.
+
+    src  - the source of the directory.
+    name - the name of the directory.
+
+    branch()      - all the files and directories will be targeted in the targeted directory.
+    list()        - returns a dictionary that includes all the filenames and extensions
+                    with directories in the targeted directory.
+    files()       - returns a list of all files in the targeted directory,
+                    includes same filenames.
+    directories() - returns a list of all directories in the targeted directory,
+                    includes same names.
+    """
     def __init__(self, src):
         if not os.path.isdir(src):
             raise FileTypeError("'%s' is not a directory." % src)
@@ -74,10 +95,27 @@ class TargetDirectory(object):
         structure = {}
         for branch in self.branch():
             if isinstance(branch, TargetFile):
-                structure[branch.name] = branch.ext
+                structure[branch.name] = None
             elif isinstance(branch, TargetDirectory):
                 structure[branch.name] = branch.list()
         return structure
+
+    def files(self):
+        files = []
+        for branch in self.branch():
+            if isinstance(branch, TargetFile):
+                files.append(branch.name)
+            if isinstance(branch, TargetDirectory):
+                files += (branch.files())
+        return files
+
+    def directories(self):
+        directories = []
+        for branch in self.branch():
+            if isinstance(branch, TargetDirectory):
+                directories.append(branch.name)
+                directories += (branch.directories())
+        return directories
 
     def move_to(self, dst, ignore=False, force=False):
         move_to(self.src, dst, ignore, force)
@@ -122,7 +160,7 @@ def mkdir(directory, ignore=False, force=False):
 
 def rename(src, name, ignore=False, force=False):
     """
-    Rename a file or a directory
+    Rename a file or a directory.
     """
     parent_dir = os.path.abspath(os.path.join(src, os.pardir))
     return move(src, os.path.join(parent_dir, name), ignore, force)
@@ -193,12 +231,12 @@ def move_to(src, dst, ignore=False, force=False):
 def archive(src, name=None, format='tar'):
     """
     Archive types:
-        - gztar: gzip'ed tar-file
-        - bztar: bzip2'ed tar-file
-        - tar: uncompressed tar file
-        - zip: ZIP file
+        - gztar: gzip'ed tar-file.
+        - bztar: bzip2'ed tar-file.
+        - tar: uncompressed tar file.
+        - zip: ZIP file.
     Warning:
-        - Archive will overwrite file with the same name forcely
+        - Archive will overwrite file with the same name forcely.
     """
     parent_dir = os.path.abspath(os.path.join(src, os.pardir))
     if not name:

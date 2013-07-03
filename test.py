@@ -81,6 +81,16 @@ class TestTargetDirectory:
         target_directory = TargetDirectory(test_porter)
         assert isinstance(target_directory.list(), dict)
 
+    def test_files(self):
+        init()
+        target_directory = TargetDirectory(test_porter)
+        assert isinstance(target_directory.files(), list)
+
+    def test_directories(self):
+        init()
+        target_directory = TargetDirectory(test_porter)
+        assert isinstance(target_directory.directories(), list)
+
     def test_move_to(self):
         init()
         target_directory = TargetDirectory(dir1)
