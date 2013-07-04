@@ -65,6 +65,8 @@ class TargetDirectory(object):
                     includes same filenames.
     directories() - returns a list of all directories in the targeted directory,
                     includes same names.
+
+    `move_to`, `empty` and `remove` can be used in this class.
     """
     def __init__(self, src):
         if not os.path.isdir(src):
@@ -160,7 +162,7 @@ def mkdir(directory, ignore=False, force=False):
 
 def rename(src, name, ignore=False, force=False):
     """
-    Rename a file or a directory.
+    Rename a file or directory.
     """
     parent_dir = os.path.abspath(os.path.join(src, os.pardir))
     return move(src, os.path.join(parent_dir, name), ignore, force)
@@ -168,7 +170,7 @@ def rename(src, name, ignore=False, force=False):
 
 def remove(src):
     """
-    Remove a file or a directory.
+    Remove a file or directory.
     """
     if os.path.isfile(src):
         os.remove(src)
@@ -178,10 +180,7 @@ def remove(src):
 
 def copy(src, dst, ignore=False, force=False):
     """
-    Copy a file or directory to a future destination.
-    Possibilities:
-        - copy a file to a future destination.
-        - copy a directory to a future destination.
+    Copy a file or directory to a destination.
     """
     if not os.path.exists(src):
         raise FileNotFoundError("'%s' is not found." % src)
@@ -209,15 +208,15 @@ def copy(src, dst, ignore=False, force=False):
 
 
 def copy_to(src, dst, ignore=False, force=False):
+    """
+    Copy a file or directory to a directory.
+    """
     copy(src, os.path.join(dst, os.path.basename(src)), ignore, force)
 
 
 def move(src, dst, ignore=False, force=False):
     """
-    Move a file or directory to a future destination.
-    Possibilities:
-        - move a file to a future destination.
-        - move a directory to a future destination.
+    Move a file or directory to a destination.
     """
     copy(src, dst, ignore, force)
     remove(src)
@@ -225,6 +224,9 @@ def move(src, dst, ignore=False, force=False):
 
 
 def move_to(src, dst, ignore=False, force=False):
+    """
+    Move a file or directory to a directory.
+    """
     return move(src, os.path.join(dst, os.path.basename(src)), ignore, force)
 
 
@@ -250,4 +252,7 @@ def archive(src, name=None, format='tar'):
 
 
 def archive_to(src, dst, name=None, format='tar'):
+    """
+    Archive the file to a destination.
+    """
     return move_to(archive(src, name, format), dst)
